@@ -1,19 +1,15 @@
-def merge(left,right)
-  return right if left.empty?
-  return left if right.empty?
-  if left[0] < right[0]
-    newArr = ([left[0]] << merge(left[1..-1], right[0..-1])).flatten
-  else
-    newArr = ([right[0]] << merge(left[0..-1], right[1..-1])).flatten
-  end
-newArr
+def merge(left,right,merged=[])
+  return merged << left if right.empty?
+  return merged << right if left.empty?
+  left.first < right.first ? merged << left.shift : merged << right.shift
+  merge(left,right,merged)
 end
 
 def merge_sort(array)
   if array.length > 1
     left = merge_sort(array.slice!(0,array.length/2)) 
     right = merge_sort(array)
-    newArray = merge(left,right)
+    merge(left,right).flatten
   else
     array
   end
